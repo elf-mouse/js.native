@@ -1,71 +1,55 @@
-# EVENTS
+## Events
 
-## Off
+For a complete replacement with namespace and delegation, refer to https://github.com/oneuijs/oui-dom-events
 
-```js
-// jQuery
-$(el).off(eventName, eventHandler);
+- [5.0](#5.0) <a name='5.0'></a> Document ready by `DOMContentLoaded`
 
-// IE9+
-el.removeEventListener(eventName, eventHandler);
-```
+  ```js
+  // jQuery
+  $(document).ready(eventHandler);
 
-## On
-
-```js
-// jQuery
-$(el).on(eventName, eventHandler);
-
-// IE9+
-el.addEventListener(eventName, eventHandler);
-```
-
-## Ready
-
-```js
-// jQuery
-$(document).ready(function(){
-
-});
-
-// IE9+
-function ready(fn) {
-  if (document.readyState != 'loading'){
-    fn();
+  // Native
+  // Check if the DOMContentLoaded has already been completed
+  if (document.readyState !== 'loading') {
+    eventHandler();
   } else {
-    document.addEventListener('DOMContentLoaded', fn);
+    document.addEventListener('DOMContentLoaded', eventHandler);
   }
-}
-```
+  ```
 
-## Trigger Custom
+- [5.1](#5.1) <a name='5.1'></a> Bind an event with on
 
-> ALTERNATIVES: [EventEmitter](https://github.com/Wolfy87/EventEmitter) [Vine](https://github.com/arextar/Vine) [microevent](https://github.com/jeromeetienne/microevent.js)
+  ```js
+  // jQuery
+  $el.on(eventName, eventHandler);
 
-```js
-// jQuery
-$(el).trigger('my-event', {some: 'data'});
+  // Native
+  el.addEventListener(eventName, eventHandler);
+  ```
 
-// IE9+
-if (window.CustomEvent) {
-  var event = new CustomEvent('my-event', {detail: {some: 'data'}});
-} else {
-  var event = document.createEvent('CustomEvent');
-  event.initCustomEvent('my-event', true, true, {some: 'data'});
-}
+- [5.2](#5.2) <a name='5.2'></a> Unbind an event with off
 
-el.dispatchEvent(event);
-```
+  ```js
+  // jQuery
+  $el.off(eventName, eventHandler);
 
-## Trigger Native
+  // Native
+  el.removeEventListener(eventName, eventHandler);
+  ```
 
-```js
-// jQuery
-$(el).trigger('change');
+- [5.3](#5.3) <a name='5.3'></a> Trigger
 
-// IE9+
-// For a full list of event types: https://developer.mozilla.org/en-US/docs/Web/API/document.createEvent
-var event = document.createEvent('HTMLEvents');
-event.initEvent('change', true, false);
-el.dispatchEvent(event);
-```
+  ```js
+  // jQuery
+  $(el).trigger('custom-event', {key1: 'data'});
+
+  // Native
+  if (window.CustomEvent) {
+    const event = new CustomEvent('custom-event', {detail: {key1: 'data'}});
+  } else {
+    const event = document.createEvent('CustomEvent');
+    event.initCustomEvent('custom-event', true, true, {key1: 'data'});
+  }
+
+  el.dispatchEvent(event);
+  ```
